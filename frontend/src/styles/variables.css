@@ -1,0 +1,71 @@
+﻿/* src/styles/variables.css */
+:root {
+  /* Light Theme (Default) */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #eef2f7;
+  --bg-card: #ffffff;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --border-color: #e1e8ed;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --primary-color: #2980b9;
+  --primary-dark: #1a5276;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --info-color: #3498db;
+  
+  /* AQI Colors */
+  --aqi-good: #00E400;
+  --aqi-moderate: #FFFF00;
+  --aqi-sensitive: #FF7E00;
+  --aqi-unhealthy: #FF0000;
+  --aqi-very: #8F3F97;
+  --aqi-hazardous: #7E0023;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Border Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-full: 9999px;
+  
+  /* Alert Backgrounds */
+  --info-bg: #ecf6fd;
+  --warning-bg: #fef6e8;
+  --danger-bg: #fdecea;
+  
+  /* Skeleton */
+  --skeleton-color: #e0e0e0;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: #0f3460;
+  --text-primary: #e2e8f0;
+  --text-secondary: #a0aec0;
+  --border-color: #2d3748;
+  --skeleton-color: #2d3748;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

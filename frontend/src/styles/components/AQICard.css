@@ -1,0 +1,102 @@
+﻿/* src/styles/components/AQICard.css */
+.aqi-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+}
+
+.aqi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.aqi-value-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.aqi-value {
+  font-size: 64px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.aqi-category {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.aqi-emoji {
+  font-size: 2rem;
+  margin-top: 8px;
+}
+
+.weather-info {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.weather-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.pollutants {
+  margin-top: 16px;
+}
+
+.pollutant-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.pollutant {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.9rem;
+}
+
+.pollutant .label {
+  color: var(--text-secondary);
+}
+
+.pollutant .value {
+  font-weight: 500;
+}
+
+.recommendation {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.recommendation h4 {
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.recommendation p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
