@@ -6,7 +6,7 @@ import { useCity } from '../../context/CityContext'
 import { useNotifications } from '../../context/NotificationContext'
 import { useAuth } from '../../context/AuthContext'
 import NotificationDropdown from '../Notifications/NotificationDropdown'
-
+import "./Header.css"
 const Header = ({ onMenuClick }) => {
   const { theme, toggleTheme } = useTheme()
   const { currentCity } = useCity()

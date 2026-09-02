@@ -10,6 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { cities } from '../context/CityContext';
+import "./Profile.css"
 
 const Profile = () => {
   const { user, updateProfile, changePassword, logout, isAuthenticated } = useAuth();

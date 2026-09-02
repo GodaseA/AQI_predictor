@@ -1,0 +1,194 @@
+/* LocationSearch.css */
+
+.location-search {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.location-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280; /* muted label */
+}
+
+/* Input row */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.location-input {
+  width: 100%;
+  padding: 8px 72px 8px 34px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #f9fafb;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.location-input:hover {
+  border-color: #d1d5db;
+}
+
+.location-input:focus {
+  border-color: #0d6b7c; /* bluish‑green focus */
+  box-shadow: 0 0 0 3px rgba(13, 107, 124, 0.1);
+  background: #ffffff;
+}
+
+/* Left pin icon */
+.search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 14px;
+  color: #9ca3af;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* Right-side buttons */
+.clear-btn,
+.current-location-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 5px;
+  color: #9ca3af;
+  transition: color 0.15s, background 0.15s;
+}
+
+.clear-btn {
+  right: 34px;
+  font-size: 13px;
+}
+
+.clear-btn:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.current-location-btn {
+  right: 8px;
+  font-size: 14px;
+}
+
+.current-location-btn:hover:not(:disabled) {
+  color: #0d6b7c; /* bluish‑green hover */
+  background: #e7f3f6; /* soft bluish‑green background */
+}
+
+.current-location-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.spinning {
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Suggestions dropdown */
+.suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.suggestions-dropdown::-webkit-scrollbar {
+  width: 4px;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+/* Loading state */
+.suggestion-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Individual suggestion */
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.suggestion-item:hover,
+.suggestion-item--active {
+  background: #e7f3f6; /* bluish‑green highlight */
+  border-left: 3px solid #ff7a45; /* orange accent bar */
+}
+
+.suggestion-pin {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.suggestion-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.suggestion-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-address {
+  font-size: 11px;
+  color: #6b7280; /* slightly muted */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

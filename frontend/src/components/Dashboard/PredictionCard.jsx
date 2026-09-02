@@ -1,7 +1,14 @@
-﻿import React from 'react'
+﻿// src/components/Dashboard/PredictionCard.jsx
+import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaArrowDown, FaArrowUp, FaMinus } from 'react-icons/fa'
+import { 
+  FaArrowDown, 
+  FaArrowUp, 
+  FaMinus,
+  FaInfoCircle
+} from 'react-icons/fa'
 import { getAQICategory } from '../../utils/helpers'
+import "./PredictionCard.css"
 
 const PredictionCard = ({ data, isLoading }) => {
   // Show loading skeleton only on initial load
@@ -16,6 +23,7 @@ const PredictionCard = ({ data, isLoading }) => {
     )
   }
 
+
   if (!data) {
     return (
       <div className="card">
@@ -24,6 +32,7 @@ const PredictionCard = ({ data, isLoading }) => {
       </div>
     )
   }
+
 
   // Get data with fallbacks
   const currentAqi = data.current_aqi ?? data.currentAQI ?? 0
@@ -35,9 +44,11 @@ const PredictionCard = ({ data, isLoading }) => {
   const trend = data.trend ?? 'stable'
   const confidence = data.confidence ?? 0.7
 
+
   const currentCategory = getAQICategory(currentAqi)
   const category2hr = getAQICategory(predicted2hr)
   const category4hr = getAQICategory(predicted4hr)
+
 
   const getTrendComponent = (trendValue) => {
     switch (trendValue?.toLowerCase()) {
@@ -50,6 +61,7 @@ const PredictionCard = ({ data, isLoading }) => {
     }
   }
 
+
   const getTrendText = (trendValue) => {
     switch (trendValue?.toLowerCase()) {
       case 'improving':
@@ -61,7 +73,14 @@ const PredictionCard = ({ data, isLoading }) => {
     }
   }
 
+
   const confidencePercent = Math.round(confidence * 100)
+  const confidenceColor = confidencePercent >= 80 
+    ? '#10b981' 
+    : confidencePercent >= 60 
+    ? '#ca8a04' 
+    : '#ef4444'
+
 
   return (
     <motion.div 
@@ -70,23 +89,32 @@ const PredictionCard = ({ data, isLoading }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <h3>Predictions (Next 4 Hours)</h3>
+      <div className="prediction-header">
+        <h3>Predictions (Next 4 Hours)</h3>
+        <div className="prediction-info">
+          <FaInfoCircle className="info-icon" />
+          <span className="info-text">Model confidence: High</span>
+        </div>
+      </div>
       
+      {/* Main predictions timeline */}
       <div className="predictions-container">
         {/* Current AQI */}
         <div className="prediction-item">
           <span className="prediction-label">Current</span>
-          <AnimatePresence mode="wait">
-            <motion.span 
-              key={currentAqi}
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="prediction-value" 
-              style={{ color: currentCategory.color }}
-            >
-              {currentAqi}
-            </motion.span>
-          </AnimatePresence>
+          <div className="prediction-value-container">
+            <AnimatePresence mode="wait">
+              <motion.span 
+                key={currentAqi}
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="prediction-value" 
+                style={{ color: currentCategory.color }}
+              >
+                {currentAqi}
+              </motion.span>
+            </AnimatePresence>
+          </div>
           <span className="prediction-category">{currentCategoryText}</span>
         </div>
 
@@ -97,17 +125,19 @@ const PredictionCard = ({ data, isLoading }) => {
         {/* 2 Hours Prediction */}
         <div className="prediction-item">
           <span className="prediction-label">In 2 Hours</span>
-          <AnimatePresence mode="wait">
-            <motion.span 
-              key={predicted2hr}
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="prediction-value" 
-              style={{ color: category2hr.color }}
-            >
-              {predicted2hr}
-            </motion.span>
-          </AnimatePresence>
+          <div className="prediction-value-container">
+            <AnimatePresence mode="wait">
+              <motion.span 
+                key={predicted2hr}
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="prediction-value" 
+                style={{ color: category2hr.color }}
+              >
+                {predicted2hr}
+              </motion.span>
+            </AnimatePresence>
+          </div>
           <span className="prediction-category">{category2hrText}</span>
         </div>
 
@@ -118,17 +148,19 @@ const PredictionCard = ({ data, isLoading }) => {
         {/* 4 Hours Prediction */}
         <div className="prediction-item">
           <span className="prediction-label">In 4 Hours</span>
-          <AnimatePresence mode="wait">
-            <motion.span 
-              key={predicted4hr}
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="prediction-value" 
-              style={{ color: category4hr.color }}
-            >
-              {predicted4hr}
-            </motion.span>
-          </AnimatePresence>
+          <div className="prediction-value-container">
+            <AnimatePresence mode="wait">
+              <motion.span 
+                key={predicted4hr}
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="prediction-value" 
+                style={{ color: category4hr.color }}
+              >
+                {predicted4hr}
+              </motion.span>
+            </AnimatePresence>
+          </div>
           <span className="prediction-category">{category4hrText}</span>
         </div>
       </div>
@@ -141,19 +173,41 @@ const PredictionCard = ({ data, isLoading }) => {
         </div>
       </div>
 
-      {/* Confidence Bar */}
+      {/* Prediction Confidence */}
       <div className="prediction-confidence">
         <div className="confidence-label">
-          <span>Prediction Confidence</span>
-          <span>{confidencePercent}%</span>
+          <div className="label-text">
+            <span>Prediction Confidence</span>
+            <span className="confidence-value">{confidencePercent}%</span>
+          </div>
+          <span className="confidence-score">
+            {confidencePercent >= 80 ? 'High' : confidencePercent >= 60 ? 'Medium' : 'Low'}
+          </span>
         </div>
         <div className="confidence-bar">
           <motion.div 
             className="confidence-fill" 
+            style={{ backgroundColor: confidenceColor }}
             initial={{ width: 0 }}
             animate={{ width: `${confidencePercent}%` }}
             transition={{ duration: 0.5 }}
           ></motion.div>
+        </div>
+      </div>
+
+      {/* Additional data points */}
+      <div className="prediction-metadata">
+        <div className="metadata-item">
+          <span className="label">Forecast window:</span>
+          <span className="value">Next 4 hours</span>
+        </div>
+        <div className="metadata-item">
+          <span className="label">Model type:</span>
+          <span className="value">AI-Pollution Neural Net</span>
+        </div>
+        <div className="metadata-item">
+          <span className="label">Data granularity:</span>
+          <span className="value">15-minute intervals</span>
         </div>
       </div>
 
@@ -164,5 +218,6 @@ const PredictionCard = ({ data, isLoading }) => {
     </motion.div>
   )
 }
+
 
 export default PredictionCard

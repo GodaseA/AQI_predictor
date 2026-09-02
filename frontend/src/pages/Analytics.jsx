@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useCity } from '../context/CityContext'
 import { useAQIHistory } from '../hooks/useAQI'
 import AQITrendChart from '../components/Charts/AQITrendChart'
-
+import "./Analytics.css"
 const Analytics = () => {
   const { currentCity } = useCity()
   const { data: historyData, isLoading } = useAQIHistory(currentCity, 168) // 7 days

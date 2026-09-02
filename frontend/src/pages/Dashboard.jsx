@@ -1,4 +1,5 @@
-﻿import React, { useState, useEffect, useCallback } from 'react'
+﻿// src/pages/Dashboard.jsx
+import React, { useState, useEffect, useCallback } from 'react'
 import { useQueryClient } from 'react-query'
 import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
@@ -11,6 +12,7 @@ import AQITrendChart from '../components/Charts/AQITrendChart'
 import { useCity } from '../context/CityContext'
 import { useAQI, usePredictions, useAlerts, useAQIHistory, useRefreshData } from '../hooks/useAQI'
 import { useWebSocket } from '../hooks/useWebSocket'
+import "./Dashboard.css"
 
 const Dashboard = () => {
   const { currentCity } = useCity()
@@ -18,35 +20,31 @@ const Dashboard = () => {
   const { refreshAll } = useRefreshData()
   const [selectedLocation, setSelectedLocation] = useState(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [routeData, setRouteData] = useState(null) // State for route data
-  
-  // Real-time data fetching with auto-refresh
+  const [routeData, setRouteData] = useState(null)
+
+  // Data fetching
   const { data: aqiData, isLoading: aqiLoading, error: aqiError, isFetching: aqiFetching } = useAQI(currentCity)
   const { data: predictionsData, isLoading: predictionsLoading, error: predictionsError, isFetching: predictionsFetching } = usePredictions(currentCity)
   const { data: alertsData, isLoading: alertsLoading } = useAlerts(currentCity)
   const { data: historyData } = useAQIHistory(currentCity, 24)
-  
-  // Log data for debugging
+
+  // Debug logging
   useEffect(() => {
-    console.log('Predictions Data:', predictionsData)
-    console.log('AQI Data:', aqiData)
-    console.log('Route Data:', routeData)
-  }, [predictionsData, aqiData, routeData])
-  
-  // WebSocket for real-time updates
+    console.log('🔵 Predictions Data:', predictionsData)
+    console.log('🔵 Predictions Loading:', predictionsLoading)
+    console.log('🔵 Predictions Error:', predictionsError)
+    console.log('🟢 AQI Data:', aqiData)
+  }, [predictionsData, predictionsLoading, predictionsError, aqiData])
+
+  // WebSocket for real-time updates (only heartbeat, no data override)
   const { lastMessage } = useWebSocket(`city-${currentCity.value}`)
 
   // Handle real-time updates
   useEffect(() => {
-    if (lastMessage?.type === 'prediction') {
-      queryClient.setQueryData(['predictions', currentCity.value], lastMessage.data)
-      toast.success('New prediction data available', { icon: '🔄' })
+    if (lastMessage?.type === 'heartbeat') {
+      console.log('WebSocket heartbeat received')
     }
-    
-    if (lastMessage?.type === 'alert') {
-      toast.error(lastMessage.message, { duration: 10000 })
-    }
-  }, [lastMessage, queryClient, currentCity])
+  }, [lastMessage])
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true)
@@ -61,7 +59,6 @@ const Dashboard = () => {
     }
   }, [refreshAll])
 
-  // Handle route calculation from RouteOptimizer
   const handleRouteCalculated = useCallback((route) => {
     console.log('Route calculated:', route)
     setRouteData(route)
@@ -73,12 +70,11 @@ const Dashboard = () => {
     setRouteData(null)
   }, [currentCity])
 
-  // Show fetching indicator
   const isFetching = aqiFetching || predictionsFetching
 
   if (aqiError) {
     return (
-      <div className="error-state">
+      <div className="dashboard-error">
         <h3>Failed to load AQI data</h3>
         <p>{aqiError.message}</p>
         <button onClick={handleRefresh}>Retry</button>
@@ -87,84 +83,126 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
+    <div className="dashboard-layout">
+      <header className="dashboard-header">
         <h1>Air Quality Dashboard</h1>
+
+        {/* Refresh button styled to match navbar (small, subtle) */}
         <div className="dashboard-actions">
           {isFetching && (
             <span className="fetching-indicator">
               <span className="spinner-small"></span> Updating...
             </span>
           )}
-          <button 
-            onClick={handleRefresh} 
-            className="refresh-btn"
+          <button
+            onClick={handleRefresh}
+            className="btn-refresh btn-refresh-small"
             disabled={isRefreshing}
           >
-            {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
+            {isRefreshing ? 'Refresh...' : '🔄 Refresh'}
           </button>
         </div>
-      </div>
+      </header>
 
-      <div className="dashboard-grid">
-        {/* Left Column */}
-        <div className="dashboard-col col-3">
-          <AQICard data={aqiData} isLoading={aqiLoading} />
-          <PredictionCard data={predictionsData} isLoading={predictionsLoading} />
+      {/* <main className="dashboard-main">
+        <div className="dashboard-grid">
+           <section className="dashboard-col dashboard-col-left">
+            <div className="aqi-predictions-grid">
+              <AQICard data={aqiData} isLoading={aqiLoading} />
+              <PredictionCard data={predictionsData} isLoading={predictionsLoading} />
+            </div>
+
+            <div className="alerts-chart-grid">
+              <AlertCard data={alertsData} isLoading={alertsLoading} />
+
+              <div className="chart-container">
+                <h3>24‑Hour AQI Trend</h3>
+                <AQITrendChart data={historyData} />
+              </div>
+            </div>
+          </section>
+
+           <section className="dashboard-col dashboard-col-right">
+                <TrafficMap
+                city={currentCity}
+                aqiData={aqiData}
+                onLocationSelect={setSelectedLocation}
+                routeData={routeData}
+              />
+
+             <div className="route-optimizer-container">
+              <RouteOptimizer
+                city={currentCity}
+                onRouteCalculated={handleRouteCalculated}
+              />
+            </div>
+
+            {routeData && (
+              <div className="route-info-banner">
+                <span>✅ Route active: {routeData.name || 'Optimized Route'}</span>
+                <button onClick={() => setRouteData(null)}>×</button>
+              </div>
+            )}
+
+          </section>
         </div>
+      </main> */}
 
-        {/* Center Column - Map */}
-        <div className="dashboard-col col-6">
-          <div className="map-container">
-            <TrafficMap 
+      <main className="dashboard-main">
+        <div className="dashboard-grid">
+          <section className="dashboard-row dashboard-row-top">
+            <div className="aqi-predictions-grid">
+              <AQICard data={aqiData} isLoading={aqiLoading} />
+              <PredictionCard data={predictionsData} isLoading={predictionsLoading} />
+            </div>
+          </section>
+
+          <section className="dashboard-row dashboard-row-mid">
+            <TrafficMap
               city={currentCity}
               aqiData={aqiData}
               onLocationSelect={setSelectedLocation}
               routeData={routeData}
             />
-          </div>
-          <div className="map-controls">
-            <button className="map-control-btn" onClick={() => setRouteData(null)}>
-              🗑️ Clear Route
-            </button>
-            <button className="map-control-btn">🗺️ Satellite</button>
-            <button className="map-control-btn">🌡️ Heatmap</button>
-          </div>
-          {routeData && (
-            <div className="route-info-banner">
-              <span>✅ Route active: {routeData.name || 'Optimized Route'}</span>
-              <button onClick={() => setRouteData(null)}>×</button>
+
+            <div className="route-optimizer-container">
+              <RouteOptimizer
+                city={currentCity}
+                onRouteCalculated={handleRouteCalculated}
+              />
             </div>
-          )}
-        </div>
 
-        {/* Right Column */}
-        <div className="dashboard-col col-3">
-          <AlertCard data={alertsData} isLoading={alertsLoading} />
-          <RouteOptimizer 
-            city={currentCity} 
-            onRouteCalculated={handleRouteCalculated}
-          />
-        </div>
-      </div>
+            {routeData && (
+              <div className="route-info-banner">
+                <span>✅ Route active: {routeData.name || 'Optimized Route'}</span>
+                <button onClick={() => setRouteData(null)}>×</button>
+              </div>
+            )}
 
-      {/* Bottom Section - Charts */}
-      <div className="dashboard-bottom">
-        <div className="chart-container">
-          <h3>24-Hour AQI Trend</h3>
-          <AQITrendChart data={historyData} />
-        </div>
-      </div>
+          </section>
+          <section className="dashboard-col dashboard-row-below">
+            <div className="alerts-chart-grid">
+              <AlertCard data={alertsData} isLoading={alertsLoading} />
 
-      {/* Auto-refresh status */}
-      <div className="auto-refresh-status">
+              <div className="chart-container">
+                <h3>24‑Hour AQI Trend</h3>
+                <AQITrendChart data={historyData} />
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+
+      {/* Auto-refresh status (bottom bar) */}
+      <footer className="dashboard-status">
         <span className="status-dot"></span>
-        Auto-refreshing every 60 seconds
-      </div>
+        Auto‑refreshing every 60 seconds
+      </footer>
 
       {/* Location Modal */}
       {selectedLocation && (
-        <motion.div 
+        <motion.div
           className="location-modal"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

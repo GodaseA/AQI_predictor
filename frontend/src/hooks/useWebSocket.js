@@ -1,4 +1,4 @@
-// src/hooks/useWebSocket.js
+﻿// src/hooks/useWebSocket.js
 import { useEffect, useRef, useState, useCallback } from 'react'
 
 export const useWebSocket = (room, options = {}) => {
@@ -7,15 +7,14 @@ export const useWebSocket = (room, options = {}) => {
   const socketRef = useRef(null)
 
   const connect = useCallback(() => {
-    // For now, return mock WebSocket functionality
-    // You can replace with actual WebSocket when backend is ready
+    // Mock WebSocket - but don't send prediction data that overrides real API
     setIsConnected(true)
     
-    // Mock receiving messages
+    // Only send heartbeats, not mock prediction data
     const interval = setInterval(() => {
       setLastMessage({
-        type: 'prediction',
-        data: { message: 'Mock update' },
+        type: 'heartbeat',
+        message: 'Connection alive',
         timestamp: new Date()
       })
     }, 30000)

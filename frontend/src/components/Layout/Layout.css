@@ -1,0 +1,98 @@
+/* ── Layout Wrapper (body‑sized) ── */
+.layout {
+  font-family: 'Nunito', sans-serif;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #eef6ea;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Sidebar (fixed width in layout) ── */
+.sidebar {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Main Content Area (navbar + content + footer) ── */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f7fbf4;
+}
+
+/* Expanded state when sidebar is closed */
+.main-content.expanded {
+  width: 100%;
+}
+
+/* ── Content area (where framer motion main lives) ── */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 32px 28px;
+}
+
+/* ── Mobile overlay for sidebar (matches your existing class) ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 58, 34, 0.28);
+  backdrop-filter: blur(2px);
+  z-index: 199;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 200;
+  }
+
+  .sidebar {
+    width: 100%;
+    transform: translateX(-100%);
+  }
+
+  .sidebar:not(.collapsed) {
+    transform: translateX(0);
+    box-shadow: 6px 0 24px rgba(58, 125, 68, 0.15);
+  }
+
+  .main-content {
+    order: 2;
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .content-area {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-area {
+    padding: 16px 12px;
+  }
+}

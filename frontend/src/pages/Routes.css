@@ -1,0 +1,196 @@
+.routes-page {
+  font-family: "Nunito", sans-serif;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  padding: 32px 20px;
+  box-sizing: border-box;
+}
+
+.routes-page > h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.routes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.route-form-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.route-form-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 14px 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background-color: var(--accent-surface);
+  font-size: 13.5px;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(109, 181, 110, 0.15);
+}
+
+.optimize-btn {
+  align-self: flex-start;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.optimize-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Route result card */
+.route-result-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.route-result-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+
+.route-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 10px 0;
+}
+
+.route-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.route-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+.route-stat strong {
+  color: var(--text-primary);
+}
+
+/* Classes for AQI indicator */
+.aqi-good {
+  color: #10b981;
+}
+
+.aqi-moderate {
+  color: #f59e0b;
+}
+
+.aqi-sensitive {
+  color: #f97316;
+}
+
+.aqi-unhealthy,
+.aqi-very-unhealthy,
+.aqi-hazardous {
+  color: #ef4444;
+}
+
+/* Tips box */
+.route-tips {
+  margin-top: 24px;
+  padding: 18px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+}
+
+.route-tips h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.route-tips ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+/* Large map and card blocks */
+.route-optimizer-card-wrapper,
+.traffic-map-large {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 2px 10px rgba(58, 125, 68, 0.12);
+}
+
+.traffic-map-large {
+  height: 360px;
+  border-radius: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .routes-page {
+    padding: 24px 16px;
+  }
+
+  .routes-container {
+    gap: 16px;
+  }
+}

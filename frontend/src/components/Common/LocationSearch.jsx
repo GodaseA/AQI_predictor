@@ -1,7 +1,9 @@
 ﻿// src/components/Common/LocationSearch.jsx
 import React, { useState, useEffect, useRef } from 'react'
-import { FiMapPin, FiSearch, FiLoader, FiX, FiNavigation } from 'react-icons/fi'
+import { FiMapPin, FiLoader, FiX, FiNavigation } from 'react-icons/fi'
 import { locationService } from '../../services/locationService'
+import toast from 'react-hot-toast'
+import "./LocationSearch.css"
 
 const LocationSearch = ({ 
   placeholder = "Search location...", 
@@ -16,59 +18,42 @@ const LocationSearch = ({
   const [isLoading, setIsLoading] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [isUsingCurrent, setIsUsingCurrent] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(-1)
   const searchRef = useRef(null)
   const debounceTimer = useRef(null)
   const inputRef = useRef(null)
 
-  // Auto focus
   useEffect(() => {
-    if (autoFocus && inputRef.current) {
-      inputRef.current.focus()
-    }
+    if (autoFocus && inputRef.current) inputRef.current.focus()
   }, [autoFocus])
 
-  // Update query when value prop changes
   useEffect(() => {
-    if (value !== undefined && value !== query) {
-      setQuery(value)
-    }
+    if (value !== undefined && value !== query) setQuery(value)
   }, [value])
 
-  // Debounced search
   useEffect(() => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current)
-    }
-    
+    clearTimeout(debounceTimer.current)
     if (query.length < 2) {
       setSuggestions([])
       setShowSuggestions(false)
       return
     }
-    
     debounceTimer.current = setTimeout(async () => {
       setIsLoading(true)
       const results = await locationService.searchLocation(query)
       setSuggestions(results)
       setShowSuggestions(results.length > 0)
+      setActiveIndex(-1)
       setIsLoading(false)
     }, 500)
-    
-    return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current)
-      }
-    }
+    return () => clearTimeout(debounceTimer.current)
   }, [query])
 
-  // Handle click outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target))
         setShowSuggestions(false)
-      }
     }
-    
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
@@ -76,15 +61,25 @@ const LocationSearch = ({
   const handleSelect = (location) => {
     setQuery(location.name)
     setShowSuggestions(false)
-    if (onSelect) {
-      onSelect({
-        name: location.name,
-        lat: location.lat,
-        lon: location.lon
-      })
-    }
-    if (onChange) {
-      onChange(location.name)
+    setSuggestions([])
+    setActiveIndex(-1)
+    if (onSelect) onSelect({ name: location.name, lat: location.lat, lon: location.lon })
+    if (onChange) onChange(location.name)
+  }
+
+  const handleKeyDown = (e) => {
+    if (!showSuggestions || suggestions.length === 0) return
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIndex((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault()
+      handleSelect(suggestions[activeIndex])
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false)
     }
   }
 
@@ -94,20 +89,12 @@ const LocationSearch = ({
       const location = await locationService.getCurrentLocation()
       const address = await locationService.reverseGeocode(location.lat, location.lon)
       setQuery(address)
-      if (onSelect) {
-        onSelect({
-          name: address,
-          lat: location.lat,
-          lon: location.lon
-        })
-      }
-      if (onChange) {
-        onChange(address)
-      }
+      if (onSelect) onSelect({ name: address, lat: location.lat, lon: location.lon })
+      if (onChange) onChange(address)
       toast.success('Current location detected!')
     } catch (error) {
       console.error('Failed to get current location:', error)
-      alert('Unable to get your location. Please check permissions.')
+      toast.error('Unable to get your location. Please check permissions.')
     } finally {
       setIsUsingCurrent(false)
     }
@@ -119,64 +106,76 @@ const LocationSearch = ({
     setShowSuggestions(false)
     if (onChange) onChange('')
     if (onSelect) onSelect(null)
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
+    inputRef.current?.focus()
   }
 
   return (
     <div className="location-search" ref={searchRef}>
-      {label && <label>{label}</label>}
+      {label && <label className="location-label">{label}</label>}
       <div className="search-input-wrapper">
         <FiMapPin className="search-icon" />
         <input
           ref={inputRef}
           type="text"
+          className="location-input"
           placeholder={placeholder}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
             if (onChange) onChange(e.target.value)
           }}
-          onFocus={() => query.length >= 2 && setShowSuggestions(true)}
+          onFocus={() => query.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
+          onKeyDown={handleKeyDown}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
         />
         {query && (
-          <button className="clear-btn" onClick={handleClear} type="button">
+          <button className="clear-btn" onClick={handleClear} type="button" title="Clear">
             <FiX />
           </button>
         )}
-        <button 
-          className="current-location-btn" 
+        <button
+          className="current-location-btn"
           onClick={handleCurrentLocation}
           disabled={isUsingCurrent}
           title="Use my current location"
           type="button"
         >
-          {isUsingCurrent ? <FiLoader className="spinning" /> : <FiNavigation />}
+          {isUsingCurrent
+            ? <FiLoader className="spinning" />
+            : <FiNavigation />
+          }
         </button>
       </div>
-      
-      {showSuggestions && suggestions.length > 0 && (
-        <div className="suggestions-dropdown">
+
+      {(showSuggestions || isLoading) && (
+        <ul className="suggestions-dropdown" role="listbox">
           {isLoading && (
-            <div className="suggestion-loading">
-              <FiLoader className="spinning" /> Searching...
-            </div>
+            <li className="suggestion-loading">
+              <FiLoader className="spinning" />
+              <span>Searching...</span>
+            </li>
           )}
           {!isLoading && suggestions.map((suggestion, index) => (
-            <div
+            <li
               key={index}
-              className="suggestion-item"
-              onClick={() => handleSelect(suggestion)}
+              className={`suggestion-item${index === activeIndex ? ' suggestion-item--active' : ''}`}
+              onMouseDown={() => handleSelect(suggestion)}
+              role="option"
+              aria-selected={index === activeIndex}
             >
-              <FiMapPin />
+              <FiMapPin className="suggestion-pin" />
               <div className="suggestion-details">
-                <div className="suggestion-name">{suggestion.name.split(',')[0]}</div>
-                <div className="suggestion-address">{suggestion.name.split(',').slice(1).join(',').trim()}</div>
+                <span className="suggestion-name">{suggestion.name.split(',')[0]}</span>
+                <span className="suggestion-address">
+                  {suggestion.name.split(',').slice(1).join(',').trim()}
+                </span>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   )

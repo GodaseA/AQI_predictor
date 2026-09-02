@@ -1,0 +1,384 @@
+/* ── Header Navbar ── */
+.header {
+  font-family: 'Nunito', sans-serif;
+  width: 100%;
+  height: 64px;
+  background-color: #f4f9f1;
+  border-bottom: 1.5px solid #d4e8c2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 16px;
+}
+
+/* Bottom shimmer bar (matches navbar style you already use) */
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6db56e, #a8d5a2, #c8e6b0, #6db56e);
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Header left section */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+/* Header center section */
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+/* Header right section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+
+
+/* ── City Indicator ── */
+.city-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.city-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1e3a22;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.city-time {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #7a9e7e;
+  margin: 0;
+  letter-spacing: -0.1px;
+}
+
+
+
+/* ── Menu Button (mobile hamburger) ── */
+.menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: #edf7e8;
+  border: 1.5px solid #d4e8c2;
+  border-radius: 10px;
+  color: #3a7d44;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.menu-btn:hover {
+  background: #d0ecbf;
+  transform: scale(1.07);
+  box-shadow: 0 2px 8px rgba(58, 125, 68, 0.15);
+}
+
+.menu-btn:active {
+  transform: scale(0.96);
+}
+
+
+
+/* ── Logo ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: #1e3a22;
+}
+
+.logo-icon {
+  font-size: 20px;
+  color: #3a7d44;
+  filter: drop-shadow(0 1px 4px rgba(58, 125, 68, 0.3));
+  animation: sway 3s ease-in-out infinite;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e3a22;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+
+
+/* ── Theme Toggle Button ── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid #d4e8c2;
+  background-color: #edf7e8;
+  color: #3a7d44;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background-color: #e2f2d8;
+  color: #1e3a22;
+  box-shadow: 0 2px 8px rgba(58, 125, 68, 0.15);
+}
+
+
+
+/* ── Notifications Button ── */
+.notifications-wrapper {
+  position: relative;
+}
+
+.notifications-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid #d4e8c2;
+  background-color: #edf7e8;
+  color: #7a9e7e;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.notifications-btn:hover {
+  background-color: #d0ecbf;
+  color: #3a7d44;
+  transform: rotate(10deg);
+}
+
+/* Notification dot badge */
+.notification-badge {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #e53e3e;
+  border: 1px solid #e53e3e;
+  border-radius: 999px;
+  padding: 1px 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* ── User Menu Button (toggle trigger) ── */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border-radius: 999px;
+  border: 1.5px solid #d4e8c2;
+  background-color: #edf7e8;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2d6a35;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-menu-btn:hover {
+  background-color: #e2f2d8;
+  border-color: #6db56e;
+  box-shadow: 0 2px 10px rgba(58, 125, 68, 0.12);
+}
+
+/* Small avatar inside user menu */
+.user-avatar-small {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6db56e, #3a7d44);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(58, 125, 68, 0.25);
+  flex-shrink: 0;
+}
+
+
+
+/* ── User Dropdown Menu ── */
+.user-dropdown {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 180px;
+  background-color: #ffffff;
+  border: 1.5px solid #d4e8c2;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(58, 125, 68, 0.15);
+  overflow: hidden;
+  z-index: 200;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #5a7a5e;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background-color: #e2f2d8;
+  color: #1e3a22;
+}
+
+.user-dropdown a svg,
+.user-dropdown button svg {
+  font-size: 14px;
+  color: #7a9e7e;
+  transition: color 0.2s ease;
+}
+
+.user-dropdown a:hover svg,
+.user-dropdown button:hover svg {
+  color: #3a7d44;
+}
+
+
+
+/* ── Login Button (unauthenticated) ── */
+.login-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid #d4e8c2;
+  background-color: #edf7e8;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2d6a35;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-btn:hover {
+  background-color: #e2f2d8;
+  border-color: #6db56e;
+  box-shadow: 0 2px 10px rgba(58, 125, 68, 0.12);
+}
+
+.login-btn svg {
+  font-size: 14px;
+  color: #3a7d44;
+  transition: color 0.2s ease;
+}
+
+.login-btn:hover svg {
+  color: #1e3a22;
+}
+
+
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .header-center {
+    gap: 8px;
+  }
+
+  .city-name {
+    font-size: 13.5px;
+  }
+
+  .city-time {
+    font-size: 11.5px;
+  }
+
+  .login-btn {
+    font-size: 13px;
+    padding: 7px 12px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    gap: 6px;
+  }
+
+  .header-left,
+  .header-right {
+    gap: 6px;
+  }
+
+  .city-name,
+  .avatar,
+  .user-avatar-small {
+    font-size: 12px;
+  }
+
+  .notification-badge {
+    font-size: 9px;
+    padding: 1px 3px;
+  }
+}

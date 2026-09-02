@@ -9,6 +9,7 @@ import {
   FiBell,
   FiHelpCircle
 } from 'react-icons/fi'
+import "./Sidebar.css"
 
 const Sidebar = ({ isOpen, onToggle }) => {
   const menuItems = [

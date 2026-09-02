@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
-
+import "./Layout.css"
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true)  // ← Now useState works
 

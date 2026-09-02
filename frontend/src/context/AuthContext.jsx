@@ -1,5 +1,5 @@
 ﻿// src/context/AuthContext.jsx
-import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { authService } from '../services/authService';
 import toast from 'react-hot-toast';
 
@@ -17,32 +17,35 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const loadingRef = useRef(false);
 
   // Load user from localStorage on mount
   useEffect(() => {
     const loadUser = async () => {
+      if (loadingRef.current) return;
+      loadingRef.current = true;
+      
       const token = authService.getToken();
       const savedUser = authService.getCurrentUser();
       
       console.log('Loading auth state...', { token: !!token, savedUser: !!savedUser });
       
       if (token && savedUser) {
-        // Set initial state from localStorage
         setUser(savedUser);
         setIsAuthenticated(true);
         
-        // Verify token with backend (optional - can be removed for faster loading)
+        // Verify token with backend (silent, don't show errors)
         try {
           const freshUser = await authService.fetchUser();
           if (freshUser) {
             setUser(freshUser);
           }
         } catch (error) {
-          console.warn('Token verification failed, but using cached user data');
-          // Don't logout on verification failure - keep using cached data
+          console.warn('Token verification failed, using cached user data');
         }
       }
       setIsLoading(false);
+      loadingRef.current = false;
     };
     
     loadUser();

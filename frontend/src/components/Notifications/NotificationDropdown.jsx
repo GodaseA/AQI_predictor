@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiBell, FiCheck, FiCheckCircle, FiTrash2 } from 'react-icons/fi'
 import { useNotifications } from '../../context/NotificationContext'
+import "./NotificationDropdown.css"
 
 const NotificationDropdown = () => {
   const { 

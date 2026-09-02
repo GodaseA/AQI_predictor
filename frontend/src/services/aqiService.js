@@ -1,4 +1,7 @@
-﻿import apiClient from './api'
+﻿import axios from 'axios'
+import apiClient from './api'
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
 
 export const aqiService = {
   // Get current AQI for a city
@@ -11,7 +14,7 @@ export const aqiService = {
       // Return cached or fallback data instead of throwing
       return {
         city: city,
-        aqi: 85,
+        aqi: 100,
         category: 'Moderate',
         pm25: 42.5,
         pm10: 78.3,

@@ -1,4 +1,5 @@
-﻿import apiClient from './api'
+﻿// src/services/predictionService.js
+import apiClient from './api'
 
 export const predictionService = {
   // Get AQI predictions
@@ -6,35 +7,41 @@ export const predictionService = {
     try {
       const response = await apiClient.get(`/predictions/${city}`)
       console.log('Prediction API response:', response)
-      return response
-    } catch (error) {
-      console.error('Failed to fetch predictions:', error.message)
-      // Return fallback data when rate limited
-      const hour = new Date().getHours()
-      let predicted2hr = 100
-      let predicted4hr = 105
-      let trend = 'stable'
       
-      if (hour >= 8 && hour <= 10) {
-        predicted2hr = 120
-        predicted4hr = 135
-        trend = 'worsening'
-      } else if (hour >= 20 && hour <= 22) {
-        predicted2hr = 80
-        predicted4hr = 75
-        trend = 'improving'
+      // Handle different response structures
+      if (response && response.current_aqi !== undefined) {
+        return response
+      }
+      if (response && response.data && response.data.current_aqi !== undefined) {
+        return response.data
       }
       
+      // Return fallback if no valid data
       return {
         city: city,
-        current_aqi: 94,
+        current_aqi: 100,
         current_category: 'Moderate',
-        predicted_2hr: predicted2hr,
-        predicted_4hr: predicted4hr,
+        predicted_2hr: 105,
+        predicted_4hr: 110,
         category_2hr: 'Moderate',
-        category_4hr: 'Moderate',
-        trend: trend,
-        confidence: 0.74,
+        category_4hr: 'Unhealthy for Sensitive Groups',
+        trend: 'stable',
+        confidence: 0.7,
+        timestamp: new Date().toISOString()
+      }
+    } catch (error) {
+      console.error('Failed to fetch predictions:', error)
+      // Return fallback data
+      return {
+        city: city,
+        current_aqi: 100,
+        current_category: 'Moderate',
+        predicted_2hr: 105,
+        predicted_4hr: 110,
+        category_2hr: 'Moderate',
+        category_4hr: 'Unhealthy for Sensitive Groups',
+        trend: 'stable',
+        confidence: 0.7,
         timestamp: new Date().toISOString(),
         _cached: true
       }
@@ -47,17 +54,8 @@ export const predictionService = {
       const response = await apiClient.get(`/predictions/${city}/alerts`)
       return response
     } catch (error) {
-      console.error('Failed to fetch alerts:', error.message)
-      return [
-        {
-          type: 'info',
-          title: 'Data Update',
-          message: 'Using cached air quality data',
-          actions: ['Data will refresh automatically'],
-          aqiValue: 94,
-          timeframe: 'Now'
-        }
-      ]
+      console.error('Failed to fetch alerts:', error)
+      return []
     }
   },
   
@@ -67,25 +65,11 @@ export const predictionService = {
       const response = await apiClient.get(`/predictions/${city}/best-time`)
       return response
     } catch (error) {
-      console.error('Failed to fetch best time:', error.message)
+      console.error('Failed to fetch best time:', error)
       return {
         city: city,
-        current_aqi: 94,
-        recommendations: [
-          {
-            time_slot: '6:00 AM',
-            expected_aqi: 72,
-            category: 'Good',
-            recommendation: 'Excellent time for travel'
-          },
-          {
-            time_slot: '10:00 PM',
-            expected_aqi: 78,
-            category: 'Good',
-            recommendation: 'Good time for travel'
-          }
-        ],
-        _cached: true
+        current_aqi: 100,
+        recommendations: []
       }
     }
   },
@@ -96,16 +80,8 @@ export const predictionService = {
       const response = await apiClient.get(`/predictions/${city}/forecast?hours=${hours}`)
       return response
     } catch (error) {
-      console.error('Failed to fetch forecast:', error.message)
-      const forecast = []
-      for (let i = 1; i <= hours; i++) {
-        forecast.push({
-          hour: i,
-          aqi: 80 + Math.floor(Math.random() * 40),
-          category: 'Moderate'
-        })
-      }
-      return { city, forecast, _cached: true }
+      console.error('Failed to fetch forecast:', error)
+      return { city, forecast: [] }
     }
   }
 }

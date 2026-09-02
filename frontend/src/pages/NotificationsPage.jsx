@@ -7,6 +7,7 @@ import {
   FiFilter, FiArchive, FiSettings, FiX 
 } from 'react-icons/fi'
 import { useNotifications } from '../context/NotificationContext'
+import "./NotificationsPage.css"
 
 const NotificationsPage = () => {
   const { 

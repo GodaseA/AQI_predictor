@@ -1,0 +1,287 @@
+.aqi-card {
+  font-family: 'Nunito', sans-serif;
+  background: #ffffff;
+  border: 1.5px solid #d4e8c2;
+  border-radius: 16px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(58, 125, 68, 0.06);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.aqi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(58, 125, 68, 0.12);
+  border-color: #6db56e;
+}
+
+/* Decorative top blob */
+.aqi-card::before {
+  content: '';
+  position: absolute;
+  top: -24px;
+  right: -24px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d0ecbf 0%, transparent 70%);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.aqi-card:hover::before {
+  opacity: 1;
+}
+
+
+
+/* Skeleton fallback */
+.skeleton-card {
+  font-family: 'Nunito', sans-serif;
+  padding: 20px 22px;
+  border: 1.5px dashed #b8ddb0;
+  border-radius: 16px;
+  background: #f4f9f1;
+  font-size: 13px;
+  color: #9fc49f;
+  text-align: center;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.skeleton-card:hover {
+  background: #edf7e8;
+  border-color: #6db56e;
+  color: #7a9e7e;
+}
+
+
+
+/* AQI Header */
+.aqi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.aqi-header h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e3a22;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.timestamp {
+  font-size: 11.5px;
+  color: #7a9e7e;
+  letter-spacing: -0.1px;
+}
+
+
+
+/* Main AQI value and category */
+.aqi-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+
+.aqi-value-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.aqi-value {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.aqi-category {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+
+
+/* Weather info row */
+.weather-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.weather-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.weather-item svg {
+  font-size: 16px;
+  color: #3a7d44;
+}
+
+.weather-item span {
+  font-size: 12px;
+  color: #5a7a5e;
+}
+
+
+
+/* Pollutants section */
+.pollutants h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e3a22;
+  margin: 0 0 12px;
+  letter-spacing: -0.15px;
+}
+
+.pollutant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.pollutant {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px dashed #edf7e8;
+  background: #f4f9f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 11.5px;
+  color: #7a9e7e;
+  font-weight: 600;
+}
+
+.value {
+  font-size: 12px;
+  color: #1e3a22;
+  font-weight: 500;
+}
+
+
+
+/* Health recommendation */
+.recommendation {
+  margin-top: 16px;
+  border-top: 1px solid #edf7e8;
+  padding-top: 14px;
+}
+
+.recommendation h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e3a22;
+  margin: 0 0 8px;
+  letter-spacing: -0.15px;
+}
+
+.recommendation-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #5a7a5e;
+  margin: 0;
+  line-height: 1.55;
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .aqi-card {
+    padding: 16px 18px;
+  }
+
+  .aqi-header h3 {
+    font-size: 15px;
+  }
+
+  .aqi-value {
+    font-size: 36px;
+  }
+
+  .aqi-category {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .weather-info {
+    gap: 8px;
+  }
+
+  .weather-item {
+    gap: 3px;
+  }
+
+  .weather-item span {
+    font-size: 11.5px;
+  }
+
+  .pollutant-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .aqi-card {
+    padding: 14px 16px;
+  }
+
+  .aqi-header h3 {
+    font-size: 14px;
+  }
+
+  .timestamp {
+    font-size: 11px;
+  }
+
+  .aqi-value {
+    font-size: 32px;
+  }
+
+  .aqi-category {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
+  .pollutant-grid {
+    gap: 8px;
+  }
+
+  .pollutant {
+    padding: 7px 9px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .value {
+    font-size: 11.5px;
+  }
+
+  .recommendation-text {
+    font-size: 12px;
+  }
+}

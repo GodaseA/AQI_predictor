@@ -6,7 +6,7 @@ const aqiService = require('../services/aqiService');
 router.get('/:city', async (req, res) => {
   try {
     const { city } = req.params;
-    const data = await aqiService.getCurrentAQI(city);
+    const data = await aqiService.fetchRealAQI(city);
     
     // Return in the format frontend expects
     res.json({

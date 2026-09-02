@@ -1,7 +1,7 @@
 ﻿// src/context/NotificationContext.jsx
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react'
 import { notificationService } from '../services/notificationService'
-
+import "./NotificationContext.css"
 const NotificationContext = createContext()
 
 export const useNotifications = () => {

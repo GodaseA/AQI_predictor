@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useTheme } from '../context/ThemeContext'
 import { useCity, cities } from '../context/CityContext'
 import toast from 'react-hot-toast'
+import "./Settings.css"
 
 const Settings = () => {
   const { theme, toggleTheme } = useTheme()
@@ -89,7 +90,7 @@ const Settings = () => {
           )}
         </div>
 
-        <button onClick={handleSaveSettings} className="save-btn">
+        <button onClick={handleSaveSettings} className="save-set-btn">
           Save Settings
         </button>
       </div>

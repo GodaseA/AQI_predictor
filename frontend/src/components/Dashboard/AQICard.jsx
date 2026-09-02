@@ -1,11 +1,13 @@
+// src/components/Dashboard/AQICard.jsx
 import React from 'react'
 import { motion } from 'framer-motion'
 import { FiThermometer, FiDroplet, FiWind } from 'react-icons/fi'
 import { getAQICategory, getAQIRecommendation } from '../../utils/helpers'
+import "./AQICard.css"
 
 const AQICard = ({ data, isLoading }) => {
   if (isLoading) {
-    return <div className="skeleton-card">Loading...</div>
+    return <div className="skeleton-card">Loading AQI data...</div>
   }
 
   if (!data) return null
@@ -14,28 +16,33 @@ const AQICard = ({ data, isLoading }) => {
   const recommendation = getAQIRecommendation(data.aqi)
 
   return (
-    <motion.div 
+    <motion.div
       className="aqi-card"
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
+      {/* AQI header + timestamp */}
       <div className="aqi-header">
-        <h3>Air Quality Index</h3>
+        <h3>AQI Overview</h3>
         <span className="timestamp">
           Updated: {new Date(data.timestamp).toLocaleTimeString()}
         </span>
       </div>
 
-      <div className="aqi-value-section">
-        <div className="aqi-value" style={{ color: category.color }}>
-          {data.aqi}
-        </div>
-        <div className="aqi-category" style={{ backgroundColor: category.color }}>
-          {category.label}
+      {/* Main AQI value + category */}
+      <div className="aqi-main">
+        <div className="aqi-value-section">
+          <div className="aqi-value" style={{ color: category.color }}>
+            {data.aqi}
+          </div>
+          <div className="aqi-category" style={{ color: category.labelColor, backgroundColor: category.bgColor }}>
+            {category.label}
+          </div>
         </div>
       </div>
 
+      {/* Weather info */}
       <div className="weather-info">
         <div className="weather-item">
           <FiThermometer />
@@ -51,6 +58,7 @@ const AQICard = ({ data, isLoading }) => {
         </div>
       </div>
 
+      {/* Key pollutants grid */}
       <div className="pollutants">
         <h4>Key Pollutants</h4>
         <div className="pollutant-grid">
@@ -73,9 +81,10 @@ const AQICard = ({ data, isLoading }) => {
         </div>
       </div>
 
+      {/* Health recommendation */}
       <div className="recommendation">
         <h4>Health Recommendation</h4>
-        <p>{recommendation}</p>
+        <p className="recommendation-text">{recommendation}</p>
       </div>
     </motion.div>
   )

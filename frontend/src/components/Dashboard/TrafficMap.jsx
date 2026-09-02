@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.heat'
 import { useTrafficHeatmap } from '../../hooks/useTraffic'
 import { getAQIColor, getAQICategory } from '../../utils/helpers'
-
+import "./TrafficMap.css"
 // Fix Leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({

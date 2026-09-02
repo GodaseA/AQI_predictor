@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 import App from './App'
 import { CityProvider } from './context/CityContext'
 import { ThemeProvider } from './context/ThemeContext'
-import './styles/variables.css'
-import './styles/index.css'
+// import './styles/variables.css'
+import './index.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
